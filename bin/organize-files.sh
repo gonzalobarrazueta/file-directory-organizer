@@ -20,3 +20,18 @@ mkdir -p Images
 mkdir -p Videos
 mkdir -p Music
 mkdir -p Archives
+
+# Here, we're creating a string with the ls command. ls will return all elements inside the target directory and each file name will be stored in the file_names variable separated by a space
+file_names=$(ls "$target_directory") #stores all file names in a string variable
+
+# stores all files names in an array
+# IFS (Internal Field Separator) variable: it's a special variable whose value is a delimiter that will be used to split a string
+# this will modify the read command to 
+IFS=$'\n' # only newlines will be used as separators
+
+# -r: reads 'raw input'. Meaning that it will treat backslaches as literal characters and not scape characters
+# -d delimiter: it defines a stopping point. It tells the read command to read the string up to the specified delimiter. For example, if delimiter=' ' the read command will read the files_names string up until the first space ocurrence
+# In this case, the delimiter is a null character. Meaning that it will read the string from start to end and won't stop at spaces or endlines
+# -a files: stores the split words in the array called files
+# <<<: this is a 'here string'. It's a way of passing a string to a command
+read -r -d '' -a files <<< "${file_names}"
