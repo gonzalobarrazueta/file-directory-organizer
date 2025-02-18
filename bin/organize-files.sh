@@ -16,7 +16,7 @@ cd "${target_directory}"
 
 # the -p flag tells the mkdir command to ignore errors if the directory already exists. Meaning that it won't overwrite the directory nor stop the program due to the 'File exists' error. If the directory doesn't exist, then it will create it as usual.
 mkdir -p Documents
-mkdir -p Images
+mkdir -p Pictures
 mkdir -p Videos
 mkdir -p Music
 mkdir -p Archives
@@ -35,3 +35,35 @@ IFS=$'\n' # only newlines will be used as separators
 # -a files: stores the split words in the array called files
 # <<<: this is a 'here string'. It's a way of passing a string to a command
 read -r -d '' -a files <<< "${file_names}"
+
+## Iterate over the files in the array
+for file in "${files[@]}";
+do
+    # Checks if the file belongs to a specific extension and moves it to its respective directory
+    
+    # Pictures
+    if [[ "${file}" == *.png  || "${file}" == *.jpg || "${file}" == *.jpeg ]]; then
+        mv "${file}" "${target_directory}\Pictures"
+    fi
+
+    # Documents
+    if [[ "${file}" == *.pdf || "${file}" == *.doc || "${file}" == *.docx || "${file}" == *.md || "${file}" == *.txt ]]; then
+        mv "${file}" "${target_directory}\Documents"
+    fi
+
+    # Videos
+    if [[ "${file}" == *.mp4 || "${file}" == *.mkv || "${file}" == *.avi || "${file}" == *.mov ]]; then
+        mv "${file}" "${target_directory}\Videos"
+    fi
+    
+    # Music
+    if [[ "${file}" == *.mp3 || "${file}" == *.wav || "${file}" == *.flac ]]; then
+        mv "${file}" "${target_directory}\Music"
+    fi
+
+    # Archives
+    if [[ "${file}" == *.zip || "${file}" == *.tar || "${file}" == *.gz || "${file}" == *.7z ]]; then
+        mv "${file}" "${target_directory}\Archives"
+    fi
+    
+done
