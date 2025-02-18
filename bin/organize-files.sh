@@ -5,8 +5,8 @@
 
 if [ -z $1 ]; then
     # We store the path of the current directory
-    working_directory=$(pwd)
+    target_directory=$(pwd)
 else
     # We store the directory path provided as an argument
-    working_directory=$1
+    target_directory=$1
 fi
