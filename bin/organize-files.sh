@@ -10,3 +10,13 @@ else
     # We store the directory path provided as an argument
     target_directory=$1
 fi
+
+# Create file folders in the target directory
+cd "${target_directory}"
+
+# the -p flag tells the mkdir command to ignore errors if the directory already exists. Meaning that it won't overwrite the directory nor stop the program due to the 'File exists' error. If the directory doesn't exist, then it will create it as usual.
+mkdir -p Documents
+mkdir -p Images
+mkdir -p Videos
+mkdir -p Music
+mkdir -p Archives
