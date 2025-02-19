@@ -21,6 +21,24 @@ mkdir -p Videos
 mkdir -p Music
 mkdir -p Archives
 
+# declares an associative array (key-value pairs)
+declare -A categories
+
+# read valid file extensions from categories.conf file
+while IFS='=' read -r category extensions_str; do
+
+    # =~ : this is used for regular expression matching
+    # && (double ampersand), in this case, is used for command chaining not a logical AND operation.
+    # This means that if the condition success (is true), then the && statement will execute 
+    # this condition checks if the line is a comment or is empty . if it is, it skips it
+    [[ "${category}" =~ ^# || -z "${category}" ]] && continue
+
+    IFS=',' read -r -a extensions <<< "${extensions_str}"
+
+    categories["${category}"]="${extensions}"
+
+done < "/config/categories.conf"
+
 # Here, we're creating a string with the ls command. ls will return all elements inside the target directory and each file name will be stored in the file_names variable separated by a space
 file_names=$(ls "$target_directory") #stores all file names in a string variable
 
