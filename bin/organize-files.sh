@@ -33,9 +33,7 @@ while IFS='=' read -r category extensions_str; do
     # this condition checks if the line is a comment or is empty . if it is, it skips it
     [[ "${category}" =~ ^# || -z "${category}" ]] && continue
 
-    IFS=',' read -r -a extensions <<< "${extensions_str}"
-
-    categories["${category}"]="${extensions}"
+    categories["${category}"]="${extensions_str}"
 
 done < "/config/categories.conf"
 
