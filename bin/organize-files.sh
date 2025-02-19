@@ -53,33 +53,23 @@ IFS=$'\n' # only newlines will be used as separators
 read -r -d '' -a files <<< "${file_names}"
 
 ## Iterate over the files in the array
-for file in "${files[@]}";
-do
-    # Checks if the file belongs to a specific extension and moves it to its respective directory
+for file in "${files[@]}"; do
     
-    # Pictures
-    if [[ "${file}" == *.png  || "${file}" == *.jpg || "${file}" == *.jpeg ]]; then
-        mv "${file}" "${target_directory}\Pictures"
-    fi
+    # Iterates through all categories
+    for category in "${!categories[@]}"; do
 
-    # Documents
-    if [[ "${file}" == *.pdf || "${file}" == *.doc || "${file}" == *.docx || "${file}" == *.md || "${file}" == *.txt ]]; then
-        mv "${file}" "${target_directory}\Documents"
-    fi
+        # stores the categories' file extensions in an array
+        IFS=',' read -r -a file_extensions <<< "${categories[${category}]}"
 
-    # Videos
-    if [[ "${file}" == *.mp4 || "${file}" == *.mkv || "${file}" == *.avi || "${file}" == *.mov ]]; then
-        mv "${file}" "${target_directory}\Videos"
-    fi
+        # finds to which file extension category a file belongs to
+        for ext in "${file_extensions[@]}"; do
+        
+            if [[ "${file}" =~ \.("${ext}")$ ]]; then
+                mv "${file}" "${target_directory}\\${category}"
+            fi
+
+        done
     
-    # Music
-    if [[ "${file}" == *.mp3 || "${file}" == *.wav || "${file}" == *.flac ]]; then
-        mv "${file}" "${target_directory}\Music"
-    fi
-
-    # Archives
-    if [[ "${file}" == *.zip || "${file}" == *.tar || "${file}" == *.gz || "${file}" == *.7z ]]; then
-        mv "${file}" "${target_directory}\Archives"
-    fi
+    done
     
 done
