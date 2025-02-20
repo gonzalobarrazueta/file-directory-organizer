@@ -13,9 +13,6 @@ else
     target_directory=$1
 fi
 
-# Create file folders in the target directory
-cd "${target_directory}"
-
 # declares an associative array (key-value pairs)
 declare -A categories
 
@@ -28,15 +25,20 @@ while IFS='=' read -r category extensions_str; do
     # this condition checks if the line is a comment or is empty . if it is, it skips it
     [[ "${category}" =~ ^# || -z "${category}" ]] && continue
 
-    # creates directory if it doesn't exist
-    # the -p flag tells the mkdir command to ignore errors if the directory already exists. Meaning that it won't overwrite the directory nor stop the program due to the 'File exists' error. If the directory doesn't exist, then it will create it as usual.
-    mkdir -p "${category}"
-
     # xargs removes leading and trailing whitespaces and newlines. It also collapses multiple adjecent spaces into a single space
     extensions_str=$(echo "${extensions_str}" | xargs)
     categories["${category}"]="${extensions_str}"
 
 done < "/config/categories.conf"
+
+# Move to the target directory where all files will be organized
+cd "${target_directory}"
+
+# creates directory if it doesn't exist
+# the -p flag tells the mkdir command to ignore errors if the directory already exists. Meaning that it won't overwrite the directory nor stop the program due to the 'File exists' error. If the directory doesn't exist, then it will create it as usual.
+for category in "${!categories[@]}"; do
+    mkdir -p "${category}"
+done
 
 # Here, we're creating a string with the ls command. ls will return all elements inside the target directory and each file name will be stored in the file_names variable separated by a space
 file_names=$(ls "$target_directory") #stores all file names in a string variable
