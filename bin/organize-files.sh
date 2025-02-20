@@ -33,6 +33,8 @@ while IFS='=' read -r category extensions_str; do
     # this condition checks if the line is a comment or is empty . if it is, it skips it
     [[ "${category}" =~ ^# || -z "${category}" ]] && continue
 
+    # xargs removes leading and trailing whitespaces and newlines. It also collapses multiple adjecent spaces into a single space
+    extensions_str=$(echo "${extensions_str}" | xargs)
     categories["${category}"]="${extensions_str}"
 
 done < "/config/categories.conf"
