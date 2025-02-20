@@ -3,6 +3,8 @@
 # -z: checks if a string is empty. Returns true if it is. In this case, it's checking if a directory path was provided as an argument
 # if the directory string is empty, it means that we will work in the pwd (the default directory), else we will work in the specified directory
 
+start_time=$(date +%s)
+
 if [ -z $1 ]; then
     # We store the path of the current directory
     target_directory=$(pwd)
@@ -75,3 +77,11 @@ for file in "${files[@]}"; do
     done
     
 done
+
+# date: returns the current date 
+# +%s: tells it to return the date in seconds
+# There are multiple opitons such as %Y (for year) or %m (for month)
+end_time=$(date +%s)
+# double parentheses (( )) are used for arithmetic operations
+duration=$(( end_time - start_time ))
+echo "Execution time: ${duration} seconds"
