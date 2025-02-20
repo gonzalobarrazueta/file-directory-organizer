@@ -29,7 +29,7 @@ while IFS='=' read -r category extensions_str; do
     extensions_str=$(echo "${extensions_str}" | xargs)
     categories["${category}"]="${extensions_str}"
 
-done < "/config/categories.conf"
+done < "./config/categories.conf"
 
 # Move to the target directory where all files will be organized
 cd "${target_directory}"
