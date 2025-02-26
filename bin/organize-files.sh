@@ -1,7 +1,10 @@
 #!/bin/bash
 
+source ./logs/logger.sh
 # -z: checks if a string is empty. Returns true if it is. In this case, it's checking if a directory path was provided as an argument
 # if the directory string is empty, it means that we will work in the pwd (the default directory), else we will work in the specified directory
+
+script_start
 
 start_time=$(date +%s)
 
@@ -12,6 +15,8 @@ else
     # We store the directory path provided as an argument
     target_directory=$1
 fi
+
+script_target_directory "${target_directory}"
 
 # declares an associative array (key-value pairs)
 declare -A categories
@@ -83,4 +88,5 @@ done
 end_time=$(date +%s)
 # double parentheses (( )) are used for arithmetic operations
 duration=$(( end_time - start_time ))
-echo "Execution time: ${duration} seconds"
+
+script_end "${duration}"
